@@ -1,0 +1,28 @@
+.data
+post:    .ascii " risultato = %d | resto = %d"
+num1: .word 0
+num2: .word 0
+inputdec: .asciz "%d"
+
+.text
+.global main
+
+main: ldr r0,=inputdec
+      ldr r1,=num1
+      bl scanf
+      ldr r1, [r1]
+      push {r1}
+      ldr r0,=inputdec
+      ldr r1,=num1
+      bl scanf
+      push {r1}
+      pop {r0}
+      pop {r1}
+      b funct
+
+funct:
+      
+      
+
+end: mov r7, #1    @ exit
+     svc 0

@@ -1,0 +1,25 @@
+.data
+x:  .word 0
+y:  .word 2
+    .text
+    .global main
+
+main:
+      mov r6,#0
+      ldr r4,=x         @carico l'indirizzo di x in r4 , registro temporaneo
+      ldr r5,=y         @carico l'indirizzo di y in r5 , registro temporaneo
+      ldr r1,[r4]       @estraggo dall'indirizzo locato in r4 il valore
+      ldr r2,[r5]       @estraggo dall'indirizzo locato in r5 il valore
+      b for
+      b end
+
+for: 
+      cmp r1,#10
+      bge end
+      add r1,r1,#1
+      add r6,r6,r2
+      b for
+
+end:  mov r0,r6
+      mov r7,#1
+      svc 0

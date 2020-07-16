@@ -1,0 +1,43 @@
+.data
+x:    .word 1,2,3,4  @ indirizzo di cui va calcolato il prefix
+m:    .word 4        @ lunghezza del vettore
+y:    .word 0,0,0,0  @ prefisso
+post:    .ascii "%d\n"
+
+.text
+.global main
+
+main: ldr r0, =m
+      ldr r0, [r0]    @ caricamento di n in r0
+      ldr r1, =x    @ indirizzo del vettore, modifica in place
+      ldr r2, =y
+      mov r3,#0   @r3 contatore
+      mov r5,#0   @accumulatore
+      b for
+
+for:  cmp r3,r0
+      beq pre_print
+      ldr r4,[r1,r3,lsl #2]
+      add r5,r5,r4
+      str r5,[r2,r3,lsl #2]
+      add r3,r3,#1
+      b for
+
+pre_print: mov r3,#0   @r3 contatore
+           ldr r4,=m
+           ldr r4,[r4]
+           ldr r0,=post
+           ldr r2,=y
+           b vet
+
+vet:      cmp r3,r4
+          beq end
+          ldr r1,[r2,r3,lsl #2]
+          push {r0,r2,r3,r4}
+          bl printf
+          pop {r0,r2,r3,r4}
+          add r3,r3,#1
+          b vet
+
+end: mov r7, #1    @ exit
+     svc 0
